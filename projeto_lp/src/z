@@ -1,0 +1,125 @@
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import javax.swing.*;
+import java.io.IOException;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("PADRÃO FACADE!");
+
+        AplicarRegras sessao01 = new AplicarRegras();
+
+        //sessao01.AplicarRegras();
+
+
+        Document doc = null;
+
+        try {
+            //String urlanalisar = JOptionPane.showInputDialog(null);
+
+            doc = Jsoup.connect("https://americanliterature.com/short-stories-for-children").get();
+
+            sessao01.AplicarRegras(doc);
+
+
+
+            System.out.println("-------------------------------------------------");
+//             Título  <title></title>
+//             O elemento do título da página não deve estar vazio ou ausente
+//             Não deve haver mais de um título de página
+
+            String title = doc.title();
+            System.out.println("Título: "+title);
+
+            System.out.println("-------------------------------------------------");
+
+//            HTML lang
+//            <html lang='en'></html>
+//            Você deve declarar o idioma principal de uma página com o atributo html lang
+
+            Elements idioma = doc.select("html[lang]");
+            System.out.println("Idioma: "+idioma.attr("lang"));
+
+            System.out.println("-------------------------------------------------");
+
+//            Hiperlinks
+//            <body><a href="www.google.com">Go to Google</a></body>
+//            Os hiperlinks sempre devem ter texto associado a eles
+//            Não deve haver texto duplicado para hiperlinks na mesma página
+
+            Elements links = doc.select("a[href]");
+
+            for (Element link: links){
+                System.out.println("HiperLink: "+link.attr("href"));
+                System.out.println("Texto: "+link.text());
+            }
+
+            System.out.println("-------------------------------------------------");
+
+            Elements th1 = doc.select("h1");
+
+            for (Element link: th1){
+                System.out.println("H1: "+link.attr("h1"));
+                System.out.println("Texto: "+link.text());
+            }
+
+            System.out.println("-------------------------------------------------");
+
+            Elements th2 = doc.select("h2");
+
+            for (Element link: th2){
+                System.out.println("H2: "+link.attr("h2"));
+                System.out.println("Texto: "+link.text());
+            }
+
+            System.out.println("-------------------------------------------------");
+
+            Elements imagens = doc.select("img[alt]");
+
+            for (Element img: imagens){
+                System.out.println("alt: "+img.attributes());
+                System.out.println("src: "+img.attr("src"));
+            }
+
+            Elements imagens2 = doc.select("a");
+
+            for (Element img: imagens2){
+                System.out.println("alt2: "+img);
+                System.out.println("src2: "+img.attr("src"));
+            }
+
+            System.out.println("-------------------------------------------------");
+
+            Elements areas = doc.select("area[alt]");
+
+            for (Element area: areas){
+                System.out.println("alt: "+area.attributes());
+                System.out.println("Texto: "+area.text());
+            }
+
+            System.out.println("-------------------------------------------------");
+
+            Elements forms = doc.select("form");
+
+            for (Element form: forms){
+                System.out.println("form: "+form.attributes());
+                System.out.println("Texto: "+form.text());
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String title = doc.title();
+
+
+
+    }
+}
+-------------------------------- A FAZER
+//        <a><img...
+//        Elementos de imagem dentro de tags de âncora devem ter atributos alt vazios
